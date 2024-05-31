@@ -1,6 +1,7 @@
 import datetime
 import requests
 import pdfplumber
+import json
 from dateutil.relativedelta import relativedelta
 
 def get_MealData():
@@ -30,3 +31,46 @@ def analysis_pdf():
             dinnerA = tables[0][17]
             dinnerB = tables[0][20]
             return dates,breakfast,lunchA,lunchB,dinnerA,dinnerB
+        
+def make_json():
+    try:
+        f = open("ryoumenu.pdf","r")
+        dict_json = json.load(f)
+        f.close()
+
+        for i in range(7):
+            dates,breakfast,lunchA,lunchB,dinnerA,dinnerB =  analysis_pdf()
+
+            dict_json["food"][i]["date"] = dates[i+2]
+
+            if isinstance(breakfast[i+2], str):
+                dict_json["food"][i]["breakfast"] = breakfast[i+2]
+            else:
+                dict_json["food"][i]["breakfast"] = ""
+
+            if isinstance(lunchA[i+2], str):
+                dict_json["food"][i]["lunchA"] = lunchA[i+2]
+            else:
+                dict_json["food"][i]["lunchA"] = ""
+            
+            if isinstance(lunchB[i+2], str):
+                dict_json["food"][i]["lunchB"] = lunchB[i+2]
+            else:
+                dict_json["food"][i]["lunchB"] = ""
+
+            if isinstance(dinnerA[i+2], str):
+                dict_json["food"][i]["dinnerA"] = dinnerA[i+2]
+            else:
+                dict_json["food"][i]["dinnerA"] = ""
+
+            if isinstance(lunchB[i+2], str):
+                dict_json["food"][i]["dinnerB"] = dinnerB[i+2]
+            else:
+                dict_json["food"][i]["dinnerB"] = ""
+
+        new_json = open("hoge.json", "w")
+        json.dump(dict_json,new_json,indent=4)
+        return True
+    
+    except:
+        return False
