@@ -20,6 +20,7 @@ def get_MealData():
     else:
         print("HTTP_ERROR")
 
+
 def analysis_pdf():
     with pdfplumber.open("ryomenu.pdf") as pdf:
         for page in pdf.pages:
@@ -31,7 +32,8 @@ def analysis_pdf():
             dinnerA = tables[0][17]
             dinnerB = tables[0][20]
             return dates,breakfast,lunchA,lunchB,dinnerA,dinnerB
-        
+
+
 def make_json():
     try:
         f = open("ryoumenu.pdf","r")
@@ -68,9 +70,23 @@ def make_json():
             else:
                 dict_json["food"][i]["dinnerB"] = ""
 
-        new_json = open("hoge.json", "w")
+        new_json = open("ryoumenu.json", "w")
         json.dump(dict_json,new_json,indent=4)
         return True
     
     except:
         return False
+
+
+def read_json(weekday):
+    f = open("ryoumenu.json", "r")
+    now_json = json.load(f)
+    f.close()
+    date = now_json["food"][weekday]["date"]
+    breakfast = now_json["food"][weekday]["breakfast"]
+    lunchA = now_json["food"][weekday]["lunchA"]
+    lunchB = now_json["food"][weekday]["lunchB"]
+    dinnerA = now_json["food"][weekday]["dinnerA"]
+    dinnerB = now_json["food"][weekday]["dinnerB"]
+
+    return date,breakfast,lunchA,lunchB,dinnerA,dinnerB
