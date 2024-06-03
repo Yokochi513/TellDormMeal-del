@@ -165,6 +165,14 @@ async def on_message(message):
                 await message.channel.send("追加しました。")
             else:
                 await message.channel.send("追加済みです。")
+        
+        if message.content == "!confDelChannel":
+            chID = message.channel.id
+            isDelete = CMDB.Del_user(chID)
+            if isDelete:
+                await message.channel.send("削除しました。")
+            else:
+                await message.channel.send("存在しません。")
 
 
 client.run(os.getenv("BOT_TOKEN"))
