@@ -24,7 +24,7 @@ def get_MealData():
 
 
 def analysis_pdf():
-    with pdfplumber.open("ryomenu.pdf") as pdf:
+    with pdfplumber.open("ryoumenu.pdf") as pdf:
         for page in pdf.pages:
             tables = page.extract_tables()
             dates = tables[0][0]
@@ -38,7 +38,7 @@ def analysis_pdf():
 
 def make_json():
     try:
-        f = open("ryoumenu.pdf","r")
+        f = open("ryoumenu.json","r")
         dict_json = json.load(f)
         f.close()
 
@@ -93,3 +93,30 @@ def read_json(weekday):
 
     return date,breakfast,lunchA,lunchB,dinnerA,dinnerB
 
+
+def notice_update():
+    f = open("ryoumenu.json", "r")
+    now_json = json.load(f)
+    f.close()
+
+    weekday = datetime.date.today().weekday()
+    thisWeekMonDate = datetime.date.today() + relativedelta(days=-weekday)
+    thisWeekMon = thisWeekMonDate.strftime("%Y/%m%d").split("/")[1]
+    
+    MonOrigin = now_json["food"][0]["date"].split("月")
+    month = MonOrigin[0]
+    date = MonOrigin[1].split("日")[0]
+    if len(month) == 1:
+        month = "0" + month
+    if len(date) == 1:
+        date = "0" + date
+    WJsonMonday = month + date
+    print(datetime.datetime.now())
+
+    if WJsonMonday == thisWeekMon:
+        return False
+    else:
+        if get_MealData():
+            return True
+        else:
+            return False
