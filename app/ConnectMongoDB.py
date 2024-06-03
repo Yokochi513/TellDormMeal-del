@@ -28,3 +28,12 @@ def Get_UserID(*isdev:bool):
         for i in range(len(output)):
             result.append(int(output[i]["ch_id"]))
     return result
+
+def Add_user(channelNAME:str, channelID:int):
+    output = Get_user()
+    for i in range(len(output)):
+        if output[i]["ch_id"] == channelID:
+            return False
+    
+    data.insert_one({"channel_name" : channelNAME, "channel_id" : channelID, "Developer" : False})
+    return True
