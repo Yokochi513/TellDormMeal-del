@@ -2,6 +2,7 @@ import os
 import discord
 import random
 import TellDormMeal as TDM
+import ConnectMongoDB as CMDB
 from dotenv import load_dotenv
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
@@ -145,5 +146,16 @@ async def on_message(message):
             TDM.manual_update()
             await message.channel.send("更新完了")
         
+        if message.content.startswith("!confGetChannel"):
+            DevChannels = CMDB.Get_UserID(True)
+            for i in range(len(DevChannels)):
+                if DevChannels[i] == message.channel.id:
+                    embed = discord.Embed(
+                        title="登録済みチャンネルを表示します",
+                        color=0xf58220
+                    )#追記予定
+                else:
+                    return
+
 
 client.run(os.getenv("BOT_TOKEN"))

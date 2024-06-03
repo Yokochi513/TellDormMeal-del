@@ -14,8 +14,17 @@ def Get_user():
     output = []
     for s in data.find():
         _id = str(s['_id'])
-        output.append({'_id':_id, 'ch_name':s['channel_name'], 'ch_id':s['channel_id']})
+        output.append({'_id':_id, 'ch_name':s['channel_name'], 'ch_id':s['channel_id'], 'isDev':s['Developer']})
+    return output
+
+def Get_UserID(*isdev:bool):
+    output = Get_user()
     result = []
-    for i in range(len(output)):
-        result.append(int(output[i]["ch_id"]))
+    if isdev:
+        for i in range(len(output)):
+            if output[i]["isDev"]:
+                result.append(int(output[i]["ch_id"]))
+    else:
+        for i in range(len(output)):
+            result.append(int(output[i]["ch_id"]))
     return result
