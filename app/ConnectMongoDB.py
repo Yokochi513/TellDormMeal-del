@@ -37,3 +37,12 @@ def Add_user(channelNAME:str, channelID:int):
     
     data.insert_one({"channel_name" : channelNAME, "channel_id" : channelID, "Developer" : False})
     return True
+
+def Del_user(channelID:int):
+    output = Get_user()
+    
+    for i in range(len(output)):
+        if output[i]["ch_id"] == channelID:
+            data.delete_one({'_id' : ObjectId(output[i]["_id"])})
+            return True
+    return False
