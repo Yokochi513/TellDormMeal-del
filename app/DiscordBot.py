@@ -82,7 +82,7 @@ async def on_message(message):
                 reply = random.choice(failureReplys)
                 await message.channel.send(reply)
 
-        if message.content.startswith("/today"):
+        if message.content == "/today":
             if TDM.json_already_update():
                 embed = discord.Embed(
                             title="今日のメニューを表示",
@@ -104,27 +104,27 @@ async def on_message(message):
                 )
                 await message.channel.send(embed=embed)
             
-            if message.content.startswith("/tomorrow"):
-                if TDM.json_already_update():
-                    embed = discord.Embed(
-                            title="明日のメニューを表示",
-                            color=0x00ff00,
-                            )
-                date,breakfast,lunchA,lunchB,dinnerA,dinnerB = TDM.tomorrow()
-                embed.add_field(name="date", value=date, inline=False)
-                embed.add_field(name="breakfast", value=breakfast, inline=False)
-                embed.add_field(name="lunchA", value=lunchA, inline=False)
-                embed.add_field(name="lunchB", value=lunchB, inline=False)
-                embed.add_field(name="dinnerA", value=dinnerA, inline=False)
-                embed.add_field(name="dinnerB", value=dinnerB, inline=False)
-                await message.channel.send(embed=embed)
-            else:
+        if message.content == "/tomorrow":
+            if TDM.json_already_update():
                 embed = discord.Embed(
-                    title="明日の寮食を表示することができません",
-                    color=0xff0000,
-                    description	= random.choice(failureReplys)
-                )
-                await message.channel.send(embed=embed)
+                        title="明日のメニューを表示",
+                        color=0x00ff00,
+                        )
+            date,breakfast,lunchA,lunchB,dinnerA,dinnerB = TDM.tomorrow()
+            embed.add_field(name="date", value=date, inline=False)
+            embed.add_field(name="breakfast", value=breakfast, inline=False)
+            embed.add_field(name="lunchA", value=lunchA, inline=False)
+            embed.add_field(name="lunchB", value=lunchB, inline=False)
+            embed.add_field(name="dinnerA", value=dinnerA, inline=False)
+            embed.add_field(name="dinnerB", value=dinnerB, inline=False)
+            await message.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="明日の寮食を表示することができません",
+                color=0xff0000,
+                description	= random.choice(failureReplys)
+            )
+            await message.channel.send(embed=embed)
         
         if message.content.startswith("!confMenuAll"):
             embed = discord.Embed(
