@@ -1,8 +1,10 @@
 import os
 import discord
 import random
+import datetime
 import TellDormMeal as TDM
 import ConnectMongoDB as CMDB
+from discord.ext import tasks
 from dotenv import load_dotenv
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
@@ -173,6 +175,76 @@ async def on_message(message):
                 await message.channel.send("削除しました。")
             else:
                 await message.channel.send("存在しません。")
+
+
+@tasks.loop(seconds=60)
+async def everyday_notice():
+    now = datetime.datetime.now().strftime("%H:%M")
+    day = datetime.date.today().weekday()
+    failureReplys = [
+        "更新を試みましたが、不可能でした。更新を行う人を応援してあげてください。",
+        "更新が不可能でした。寮事務に対して更新を催促することを推奨します。",
+        "更新できませんでした。無念です。",
+        "知っていましたか？表示がないということは、更新されていないということなのですよ。",
+        "更新を試みましたが、不可能でした。魚国が早く更新することを願ってください。",
+        "自分で食堂まで確認しに行ってください。",
+        "ここで確認をしたならば、ごはんを食べに行きましょう。",
+        "多分きっと、何かがそこにはあります。"
+    ]
+
+    if day == 0 and now == "00:00":
+        DevChannels = CMDB.Get_UserID(True)
+        if TDM.get_MealData():
+            TDM.make_json()
+            for i in range(len(DevChannels)):
+                ch = client.get_channel(DevChannels[i])
+                await ch.send("今週分を獲得しました。")
+            
+            UserChannels = CMDB.Get_UserID()
+            for i in range(len(UserChannels)):
+                ch = client.get_channel(UserChannels[i])
+
+                embed = discord.Embed(
+                            title="今日のメニューを表示",
+                            color=0x00ff00,
+                            )
+                date,breakfast,lunchA,lunchB,dinnerA,dinnerB = TDM.today()
+                embed.add_field(name="date", value=date, inline=False)
+                embed.add_field(name="breakfast", value=breakfast, inline=False)
+                embed.add_field(name="lunchA", value=lunchA, inline=False)
+                embed.add_field(name="lunchB", value=lunchB, inline=False)
+                embed.add_field(name="dinnerA", value=dinnerA, inline=False)
+                embed.add_field(name="dinnerB", value=dinnerB, inline=False)
+                await ch.send(embed=embed)
+    
+    elif now == "00:00":
+        UserChannels = CMDB.Get_UserID()
+        if TDM.json_already_update():
+            for i in range(len(UserChannels)):
+                ch = client.get_channel(UserChannels[i])
+
+                embed = discord.Embed(
+                            title="今日のメニューを表示",
+                            color=0x00ff00,
+                            )
+                date,breakfast,lunchA,lunchB,dinnerA,dinnerB = TDM.today()
+                embed.add_field(name="date", value=date, inline=False)
+                embed.add_field(name="breakfast", value=breakfast, inline=False)
+                embed.add_field(name="lunchA", value=lunchA, inline=False)
+                embed.add_field(name="lunchB", value=lunchB, inline=False)
+                embed.add_field(name="dinnerA", value=dinnerA, inline=False)
+                embed.add_field(name="dinnerB", value=dinnerB, inline=False)
+                await ch.send(embed=embed)
+        else:
+            for i in range(len(UserChannels)):
+                ch = client.get_channel(UserChannels[i])
+                embed = discord.Embed(
+                            title="今日のメニューを表示することができません",
+                            color=0xff0000,
+                            description	= random.choice(failureReplys)
+                            )
+                await ch.send(embed=embed)
+
 
 
 client.run(os.getenv("BOT_TOKEN"))
