@@ -95,25 +95,9 @@ def read_json(weekday):
 
 
 def notice_update():
-    f = open("ryoumenu.json", "r")
-    now_json = json.load(f)
-    f.close()
-
-    weekday = datetime.date.today().weekday()
-    thisWeekMonDate = datetime.date.today() + relativedelta(days=-weekday)
-    thisWeekMon = thisWeekMonDate.strftime("%Y/%m%d").split("/")[1]
-    
-    MonOrigin = now_json["food"][0]["date"].split("月")
-    month = MonOrigin[0]
-    date = MonOrigin[1].split("日")[0]
-    if len(month) == 1:
-        month = "0" + month
-    if len(date) == 1:
-        date = "0" + date
-    WJsonMonday = month + date
     print(datetime.datetime.now())
 
-    if WJsonMonday == thisWeekMon:
+    if json_already_update():
         return False
     else:
         if get_MealData():
