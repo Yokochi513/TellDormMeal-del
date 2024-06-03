@@ -128,3 +128,8 @@ def json_already_update():
         return True
     else:
         return False
+
+
+def manual_update():
+    get_MealData()
+    make_json()
