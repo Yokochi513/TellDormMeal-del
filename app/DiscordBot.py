@@ -199,7 +199,7 @@ async def everyday_notice():
             for i in range(len(DevChannels)):
                 ch = client.get_channel(DevChannels[i])
                 await ch.send("今週分を獲得しました。")
-            
+                await client.change_presence(status = discord.Status.online, activity=discord.Game(name="今週は表示できるぜ"))
             UserChannels = CMDB.Get_UserID()
             for i in range(len(UserChannels)):
                 ch = client.get_channel(UserChannels[i])
@@ -216,6 +216,9 @@ async def everyday_notice():
                 embed.add_field(name="dinnerA", value=dinnerA, inline=False)
                 embed.add_field(name="dinnerB", value=dinnerB, inline=False)
                 await ch.send(embed=embed)
+        else:
+            await ch.send("獲得できませんでした。更新されていないようです。")
+            await client.change_presence(status = discord.Status.idle, activity=discord.Game(name="今週は表示できないぜ"))
     
     elif now == "00:00":
         UserChannels = CMDB.Get_UserID()
