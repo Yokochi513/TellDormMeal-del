@@ -156,6 +156,15 @@ async def on_message(message):
                     )#追記予定
                 else:
                     return
+        
+        if message.content.startswith("!confAddChannel"):
+            chID = message.channel.id
+            chNAME = message.channel.name
+            isAdded = CMDB.Add_user(channelNAME=chNAME, channelID=chID)
+            if isAdded:
+                await message.channel.send("追加しました。")
+            else:
+                await message.channel.send("追加済みです。")
 
 
 client.run(os.getenv("BOT_TOKEN"))
