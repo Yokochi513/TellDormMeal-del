@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
 load_dotenv(dotenv_path)
 
-Mongo_client = MongoClient(os.getenv("ULI"), tls=True, tlsCertificateKeyFile="./config/X509-cert-5865884892705360989.pem")
+Mongo_client = MongoClient(os.getenv("ULI"), tls=True, tlsCertificateKeyFile=os.getenv("tlsCertificateKeyFile_PATH"))
 db = Mongo_client.TellDormMeal
 data = db.Users
 
