@@ -4,7 +4,8 @@ import random
 import TellDormMeal as TDM
 from dotenv import load_dotenv
 
-load_dotenv()
+dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
+load_dotenv(dotenv_path)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -72,7 +73,7 @@ async def on_message(message):
                 reply = random.choice(failureReplys)
                 await message.channel.send(reply)
         
-        if message.content.stratswith("/tdinner"):
+        if message.content.startswith("/tdinner"):
             if TDM.json_already_update():
                 data = TDM.tomorrow()
                 await message.channel.send("明日の夕食は、"+data[4]+","+data[5]+"です。")
