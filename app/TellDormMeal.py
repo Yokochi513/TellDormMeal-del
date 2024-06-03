@@ -137,7 +137,12 @@ def manual_update():
 
 def today():
     weekday = datetime.date.today().weekday()
-    date,breakfast,lunchA,lunchB,dinnerA,dinnerB = read_json(weekday)
+    date,breakfast,lunchA,lunchB,dinnerA,dinnerB = read_json(weekday= weekday)
     return date,breakfast,lunchA,lunchB,dinnerA,dinnerB
 
 
+def tomorrow():
+    tomorrow = datetime.date.today() + relativedelta(days=1)
+    tomorrowWeekday = tomorrow.weekday()
+    date,breakfast,lunchA,lunchB,dinnerA,dinnerB = read_json(weekday= tomorrowWeekday)
+    return date,breakfast,lunchA,lunchB,dinnerA,dinnerB
