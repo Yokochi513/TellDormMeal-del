@@ -133,3 +133,11 @@ def json_already_update():
 def manual_update():
     get_MealData()
     make_json()
+
+
+def today():
+    weekday = datetime.date.today().weekday()
+    date,breakfast,lunchA,lunchB,dinnerA,dinnerB = read_json(weekday)
+    return date,breakfast,lunchA,lunchB,dinnerA,dinnerB
+
+
