@@ -17,8 +17,10 @@ def get_MealData():
     if res.status_code == 200:
         open("ryoumenu.pdf", "wb").write(res.content)
         print("HTTP_SUCCESS")
+        return True
     else:
         print("HTTP_ERROR")
+        return False
 
 
 def analysis_pdf():
@@ -90,3 +92,4 @@ def read_json(weekday):
     dinnerB = now_json["food"][weekday]["dinnerB"]
 
     return date,breakfast,lunchA,lunchB,dinnerA,dinnerB
+
