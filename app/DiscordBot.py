@@ -175,6 +175,29 @@ async def on_message(message):
                 await message.channel.send("削除しました。")
             else:
                 await message.channel.send("存在しません。")
+        
+        if message.content == "!confHelp":
+            embed = discord.Embed(
+                        title="コマンド一覧",
+                        color=0x00ff00,
+                        )
+            embed.add_field(name="/today", value="今日一日のメニュー", inline=False)
+            embed.add_field(name="/tomorrow", value="明日一日のメニュー", inline=False)
+            embed.add_field(name="/breakfast", value="今日の朝食", inline=False)
+            embed.add_field(name="/lunch", value="今日の昼食", inline=False)
+            embed.add_field(name="/dinner", value="今日の夕食", inline=False)
+            embed.add_field(name="/tbreakfast", value="明日の朝食", inline=False)
+            embed.add_field(name="/tlunch", value="明日の昼食", inline=False)
+            embed.add_field(name="/tdinner", value="明日の夕食", inline=False)
+            await message.channel.send(embed=embed)
+            embed.clear_fields()
+            embed = discord.Embed(
+                        title = "自動通知について",
+                        color = 0x00ff00
+                        )
+            embed.add_field(name="追加方法",value="!confAddChannelを追加したいチャンネルに送る",inline=False)
+            embed.add_field(name="削除方法",value="!confDelChannelを追加したチャンネルに送る",inline=False)
+            await message.channel.send(embed=embed)
 
 
 @tasks.loop(seconds=60)
