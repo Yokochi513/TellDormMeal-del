@@ -36,54 +36,6 @@ async def on_message(message):
     if message.author == client.user:
         return
     else:
-        if message.content.startswith("/breakfast"):
-            if TDM.json_already_update():
-                data = TDM.today()
-                await message.channel.send("今日の朝食は、"+data[1]+"です。")
-            else:
-                reply = random.choice(failureReplys)
-                await message.channel.send(reply)
-        
-        if message.content.startswith("/lunch"):
-            if TDM.json_already_update():
-                data = TDM.today()
-                await message.channel.send("今日の昼食は、"+data[2]+","+data[3]+"です。")
-            else:
-                reply = random.choice(failureReplys)
-                await message.channel.send(reply)
-
-        if message.content.startswith("/dinner"):
-            if TDM.json_already_update():
-                data = TDM.today()
-                await message.channel.send("今日の夕食は、"+data[4]+","+data[5]+"です。")
-            else:
-                reply = random.choice(failureReplys)
-                await message.channel.send(reply)
-        
-        if message.content.startswith("/tbreakfast"):
-            if TDM.json_already_update():
-                data = TDM.tomorrow()
-                await message.channel.send("明日の朝食は、"+data[1]+"です。")
-            else:
-                reply = random.choice(failureReplys)
-                await message.channel.send(reply)
-        
-        if message.content.startswith("/tlunch"):
-            if TDM.json_already_update():
-                data = TDM.tomorrow()
-                await message.channel.send("明日の昼食は、"+data[2]+","+data[3]+"です。")
-            else:
-                reply = random.choice(failureReplys)
-                await message.channel.send(reply)
-        
-        if message.content.startswith("/tdinner"):
-            if TDM.json_already_update():
-                data = TDM.tomorrow()
-                await message.channel.send("明日の夕食は、"+data[4]+","+data[5]+"です。")
-            else:
-                reply = random.choice(failureReplys)
-                await message.channel.send(reply)
-
         if message.content == "/today":
             if TDM.json_already_update():
                 embed = discord.Embed(
@@ -183,12 +135,6 @@ async def on_message(message):
                         )
             embed.add_field(name="/today", value="今日一日のメニュー", inline=False)
             embed.add_field(name="/tomorrow", value="明日一日のメニュー", inline=False)
-            embed.add_field(name="/breakfast", value="今日の朝食", inline=False)
-            embed.add_field(name="/lunch", value="今日の昼食", inline=False)
-            embed.add_field(name="/dinner", value="今日の夕食", inline=False)
-            embed.add_field(name="/tbreakfast", value="明日の朝食", inline=False)
-            embed.add_field(name="/tlunch", value="明日の昼食", inline=False)
-            embed.add_field(name="/tdinner", value="明日の夕食", inline=False)
             await message.channel.send(embed=embed)
             embed.clear_fields()
             embed = discord.Embed(
